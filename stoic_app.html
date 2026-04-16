@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Stoicus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --parchment: #f5f2eb;
+    --parchment-dark: #ede9de;
+    --ink: #1a1814;
+    --ink-mid: #3d3a33;
+    --ink-light: #7a7567;
+    --ink-faint: #b8b2a5;
+    --gold: #c9a84c;
+    --gold-light: #e8d49a;
+    --white-card: #fdfcf9;
+    --border: rgba(26,24,20,0.1);
+    --border-strong: rgba(26,24,20,0.18);
+
+    --font-display: 'Cormorant Garamond', serif;
+    --font-ui: 'Jost', sans-serif;
+
+    --radius-card: 20px;
+    --radius-btn: 10px;
+    --easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  html, body {
+    height: 100%;
+    background: #e8e4da;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-ui);
+  }
+
+  /* ── PHONE SHELL ── */
+  .phone {
+    width: 375px;
+    height: 812px;
+    background: var(--parchment);
+    border-radius: 44px;
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.08),
+      0 40px 80px rgba(0,0,0,0.22),
+      inset 0 1px 0 rgba(255,255,255,0.6);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── STATUS BAR ── */
+  .status-bar {
+    padding: 14px 28px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .status-time {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-mid);
+    letter-spacing: 0.02em;
+  }
+  .status-icons { display: flex; gap: 5px; align-items: center; }
+  .s-bar { width: 16px; height: 3px; background: var(--ink-mid); border-radius: 2px; }
+  .s-wifi { width: 14px; height: 10px; position: relative; }
+  .s-wifi::before { content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:14px; height:10px; border: 2px solid var(--ink-mid); border-bottom: none; border-radius: 12px 12px 0 0; }
+  .s-bat { width: 22px; height: 11px; border: 1.5px solid var(--ink-mid); border-radius: 3px; position: relative; }
+  .s-bat::after { content:''; position:absolute; right:-5px; top:50%; transform:translateY(-50%); width:3px; height:5px; background: var(--ink-mid); border-radius: 0 2px 2px 0; }
+  .s-bat-fill { width: 70%; height: 100%; background: var(--ink-mid); border-radius: 1px; }
+
+  /* ── SCREENS ── */
+  .screens {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+  }
+  .screen {
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.45s var(--easing), opacity 0.45s var(--easing);
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
+  }
+  .screen.active { transform: translateX(0); opacity: 1; pointer-events: all; }
+  .screen.left   { transform: translateX(-100%); opacity: 0; pointer-events: none; }
+  .screen.right  { transform: translateX(100%); opacity: 0; pointer-events: none; }
+
+  /* ── SCREEN: HOME ── */
+  #screen-home {
+    padding: 0;
+    background: var(--parchment);
+  }
+  .home-header {
+    padding: 12px 24px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .app-wordmark {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+  }
+  .app-wordmark span { color: var(--gold); }
+  .header-day {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* big quote card */
+  .quote-stage {
+    flex: 1;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+  }
+  .quote-card {
+    background: var(--white-card);
+    border-radius: var(--radius-card);
+    border: 0.5px solid var(--border);
+    padding: 28px 24px 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s var(--easing), box-shadow 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent);
+    opacity: 0.7;
+  }
+  .quote-card:active { transform: scale(0.985); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+
+  .quotemark {
+    font-family: var(--font-display);
+    font-size: 56px;
+    line-height: 0.7;
+    color: var(--gold-light);
+    margin-bottom: 16px;
+    user-select: none;
+  }
+  .quote-body {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--ink);
+    flex: 1;
+    transition: opacity 0.3s;
+  }
+  .quote-body.loading {
+    color: transparent;
+    background: linear-gradient(90deg, #e8e3d8 25%, #f0ece4 50%, #e8e3d8 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: 6px;
+  }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+  .quote-meta {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 0.5px solid var(--border);
+  }
+  .quote-author {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 10px;
+  }
+  .quote-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    border: 0.5px solid var(--border-strong);
+    border-radius: 20px;
+    padding: 3px 9px;
+    text-transform: lowercase;
+  }
+
+  /* explanation hint */
+  .hint-card {
+    background: var(--white-card);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 13px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+    flex-shrink: 0;
+  }
+  .hint-card:active { background: var(--parchment-dark); transform: scale(0.985); }
+  .hint-icon {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: var(--parchment-dark);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .hint-icon svg { width: 15px; height: 15px; }
+  .hint-text { flex: 1; }
+  .hint-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-mid);
+    margin-bottom: 1px;
+  }
+  .hint-sub {
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.02em;
+  }
+  .hint-arrow {
+    font-size: 16px;
+    color: var(--ink-faint);
+  }
+
+  /* bottom action bar */
+  .action-bar {
+    padding: 14px 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 0.5px solid var(--border);
+    flex-shrink: 0;
+  }
+  .action-group { display: flex; gap: 4px; }
+  .act-btn {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, transform 0.12s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .act-btn:active { background: var(--parchment-dark); transform: scale(0.88); }
+  .act-btn svg { width: 20px; height: 20px; }
+  .act-btn.primary {
+    background: var(--ink);
+    width: auto;
+    padding: 0 20px;
+    gap: 6px;
+    border-radius: 12px;
+  }
+  .act-btn.primary:active { background: var(--ink-mid); }
+  .act-btn.primary svg { stroke: var(--parchment); }
+  .act-btn.primary span {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--parchment);
+  }
+
+  /* ── SCREEN: EXPLANATION ── */
+  #screen-explain {
+    background: var(--parchment);
+  }
+  .explain-header {
+    padding: 10px 20px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .back-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 0.5px solid var(--border-strong);
+    background: transparent;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .back-btn:active { background: var(--parchment-dark); }
+  .back-btn svg { width: 16px; height: 16px; }
+  .nav-title {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 400;
+  }
+  .explain-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px 24px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .explain-scroll::-webkit-scrollbar { display: none; }
+
+  .mini-quote-block {
+    background: var(--ink);
+    border-radius: 16px;
+    padding: 20px 20px 18px;
+    margin-bottom: 20px;
+  }
+  .mini-qmark {
+    font-family: var(--font-display);
+    font-size: 32px;
+    line-height: 0.8;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .mini-qtext {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-style: italic;
+    line-height: 1.55;
+    color: rgba(245,242,235,0.88);
+    margin-bottom: 10px;
+  }
+  .mini-author {
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.8;
+  }
+
+  .section-head {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+    margin-top: 18px;
+  }
+  .explain-text {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.72;
+    color: var(--ink-mid);
+    font-family: var(--font-display);
+    margin-bottom: 4px;
+  }
+  .concept-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 0.5px solid var(--border);
+  }
+  .cpill {
+    font-size: 10px;
+    color: var(--ink-light);
+    border: 0.5px solid var(--border-strong);
+    border-radius: 20px;
+    padding: 4px 10px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SCREEN: SHARE ── */
+  #screen-share {
+    background: var(--parchment);
+  }
+  .share-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 16px 20px;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .share-scroll::-webkit-scrollbar { display: none; }
+
+  /* image preview card */
+  .img-preview {
+    background: var(--ink);
+    border-radius: 18px;
+    padding: 28px 24px 24px;
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4/5;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+  .img-preview-grid {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.07) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+  .img-preview-vignette {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(10,9,8,0.65) 100%);
+  }
+  .img-corner {
+    position: absolute;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.5);
+    font-family: var(--font-ui);
+  }
+  .img-corner.tl { top: 18px; left: 20px; }
+  .img-corner.tr { top: 18px; right: 20px; }
+  .img-preview-content { position: relative; z-index: 2; }
+  .img-qmark {
+    font-family: var(--font-display);
+    font-size: 36px;
+    line-height: 0.8;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .img-text {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.5;
+    color: rgba(245,242,235,0.9);
+    margin-bottom: 12px;
+  }
+  .img-divider {
+    width: 28px; height: 0.5px;
+    background: var(--gold);
+    opacity: 0.5;
+    margin-bottom: 10px;
+  }
+  .img-attribution {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.65);
+    font-family: var(--font-ui);
+  }
+
+  /* style selector */
+  .style-section-label {
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+  .style-pills {
+    display: flex;
+    gap: 7px;
+    flex-shrink: 0;
+  }
+  .style-pill {
+    flex: 1;
+    padding: 9px 4px;
+    border-radius: 10px;
+    border: 0.5px solid var(--border-strong);
+    background: var(--white-card);
+    cursor: pointer;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    transition: all 0.15s;
+  }
+  .style-pill.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--parchment);
+  }
+
+  /* share destinations */
+  .dest-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .dest-btn {
+    background: var(--white-card);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.12s;
+  }
+  .dest-btn:active { background: var(--parchment-dark); transform: scale(0.97); }
+  .dest-icon {
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .dest-icon svg { width: 16px; height: 16px; }
+  .dest-name {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-mid);
+    letter-spacing: 0.02em;
+  }
+  .dest-btn.save-full {
+    grid-column: 1 / -1;
+    justify-content: center;
+    border-style: dashed;
+  }
+  .dest-btn.save-full .dest-name { color: var(--ink-light); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--ink);
+    color: var(--parchment);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    padding: 10px 18px;
+    border-radius: 20px;
+    opacity: 0;
+    transition: opacity 0.25s, transform 0.25s;
+    white-space: nowrap;
+    z-index: 100;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-top: 0.5px solid var(--border);
+    background: var(--parchment);
+    flex-shrink: 0;
+    padding-bottom: 6px;
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    padding: 4px 12px;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 0.15s;
+  }
+  .nav-item:active { opacity: 0.5; }
+  .nav-item svg { width: 22px; height: 22px; }
+  .nav-label {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .nav-item.active .nav-label { color: var(--ink); }
+  .nav-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin: 0 auto;
+  }
+
+  /* ── LOADING OVERLAY ── */
+  .loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--parchment);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 50;
+    transition: opacity 0.4s;
+  }
+  .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+  .loading-wordmark {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--ink);
+    letter-spacing: 0.06em;
+  }
+  .loading-wordmark span { color: var(--gold); }
+  .loading-spinner {
+    width: 28px; height: 28px;
+    border: 1.5px solid var(--border-strong);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-sub {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* fade-in on load */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { animation: fadeUp 0.5s var(--easing) both; }
+  .fade-in-2 { animation: fadeUp 0.5s var(--easing) 0.1s both; }
+  .fade-in-3 { animation: fadeUp 0.5s var(--easing) 0.2s both; }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <!-- LOADING OVERLAY -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-wordmark">Stoic<span>us</span></div>
+    <div class="loading-spinner"></div>
+    <div class="loading-sub">Buscando reflexão</div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div class="status-time">9:41</div>
+    <div class="status-icons">
+      <div class="s-wifi"></div>
+      <div class="s-bar"></div>
+      <div class="s-bat"><div class="s-bat-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- SCREENS -->
+  <div class="screens" id="screens">
+
+    <!-- HOME -->
+    <div class="screen active" id="screen-home">
+      <div class="home-header fade-in">
+        <div class="app-wordmark">Stoic<span>us</span></div>
+        <div class="header-day" id="headerDay">Hoje</div>
+      </div>
+
+      <div class="quote-stage">
+        <div class="quote-card fade-in-2" id="quoteCard" onclick="goTo('explain')">
+          <div class="quotemark">"</div>
+          <div class="quote-body" id="quoteBody">Carregando reflexão...</div>
+          <div class="quote-meta">
+            <div class="quote-author" id="quoteAuthor">—</div>
+            <div class="quote-tags" id="quoteTags"></div>
+          </div>
+        </div>
+
+        <div class="hint-card fade-in-3" onclick="goTo('explain')">
+          <div class="hint-icon">
+            <svg viewBox="0 0 15 15" fill="none" stroke="var(--ink-light)" stroke-width="1.3">
+              <circle cx="7.5" cy="7.5" r="6"/>
+              <path d="M7.5 5v.01M7.5 7.5v3"/>
+            </svg>
+          </div>
+          <div class="hint-text">
+            <div class="hint-title">Entender a reflexão</div>
+            <div class="hint-sub">Ver explicação e contexto histórico</div>
+          </div>
+          <div class="hint-arrow">›</div>
+        </div>
+      </div>
+
+      <div class="action-bar fade-in-3">
+        <div class="action-group">
+          <button class="act-btn" onclick="loadQuote()" title="Nova reflexão">
+            <svg viewBox="0 0 22 22" fill="none" stroke="var(--ink-mid)" stroke-width="1.4">
+              <path d="M4 11a7 7 0 1 1 1.5 4.3M4 15.5V11h4.5"/>
+            </svg>
+          </button>
+          <button class="act-btn" onclick="toggleFav()" id="favBtn" title="Favoritar">
+            <svg viewBox="0 0 22 22" fill="none" stroke="var(--ink-mid)" stroke-width="1.4" id="favIcon">
+              <path d="M11 18.5s-7-4.5-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 18 9.5c0 4.5-7 9-7 9z"/>
+            </svg>
+          </button>
+        </div>
+        <button class="act-btn primary" onclick="goTo('share')">
+          <svg viewBox="0 0 22 22" fill="none" stroke-width="1.4">
+            <path d="M4 16v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2M11 3v11M7 7l4-4 4 4"/>
+          </svg>
+          <span>Compartilhar</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- EXPLANATION -->
+    <div class="screen right" id="screen-explain">
+      <div class="explain-header">
+        <button class="back-btn" onclick="goTo('home')">
+          <svg viewBox="0 0 16 16" fill="none" stroke="var(--ink-mid)" stroke-width="1.4">
+            <path d="M10 3L5 8l5 5"/>
+          </svg>
+        </button>
+        <div class="nav-title">Reflexão</div>
+      </div>
+
+      <div class="explain-scroll">
+        <div class="mini-quote-block">
+          <div class="mini-qmark">"</div>
+          <div class="mini-qtext" id="miniQuote">—</div>
+          <div class="mini-author" id="miniAuthor">—</div>
+        </div>
+
+        <div class="section-head">O que significa</div>
+        <div class="explain-text" id="explainMeaning">Carregando...</div>
+
+        <div class="section-head">Na prática</div>
+        <div class="explain-text" id="explainPractice">Carregando...</div>
+
+        <div class="section-head">Contexto histórico</div>
+        <div class="explain-text" id="explainContext">Carregando...</div>
+
+        <div class="concept-pills" id="explainPills"></div>
+      </div>
+    </div>
+
+    <!-- SHARE -->
+    <div class="screen right" id="screen-share">
+      <div class="explain-header">
+        <button class="back-btn" onclick="goTo('home')">
+          <svg viewBox="0 0 16 16" fill="none" stroke="var(--ink-mid)" stroke-width="1.4">
+            <path d="M10 3L5 8l5 5"/>
+          </svg>
+        </button>
+        <div class="nav-title">Salvar imagem</div>
+      </div>
+
+      <div class="share-scroll">
+        <!-- image preview -->
+        <div class="img-preview" id="shareCard">
+          <div class="img-preview-grid"></div>
+          <div class="img-preview-vignette"></div>
+          <div class="img-corner tl">Stoicus</div>
+          <div class="img-corner tr" id="shareCornerDate">—</div>
+          <div class="img-preview-content">
+            <div class="img-qmark">"</div>
+            <div class="img-text" id="shareQuoteText">—</div>
+            <div class="img-divider"></div>
+            <div class="img-attribution" id="shareAuthorText">—</div>
+          </div>
+        </div>
+
+        <!-- style selector -->
+        <div>
+          <div class="style-section-label">Estilo</div>
+          <div class="style-pills">
+            <div class="style-pill active" onclick="setStyle(this,'dark')">Escuro</div>
+            <div class="style-pill" onclick="setStyle(this,'light')">Claro</div>
+            <div class="style-pill" onclick="setStyle(this,'gold')">Dourado</div>
+          </div>
+        </div>
+
+        <!-- destinations -->
+        <div>
+          <div class="style-section-label">Compartilhar via</div>
+          <div class="dest-grid">
+            <div class="dest-btn" onclick="shareAction('WhatsApp')">
+              <div class="dest-icon" style="background:#dcf8c6;">
+                <svg viewBox="0 0 16 16" fill="#25D366"><path d="M8 1a7 7 0 0 0-6.1 10.4L1 15l3.7-.9A7 7 0 1 0 8 1z"/></svg>
+              </div>
+              <div class="dest-name">WhatsApp</div>
+            </div>
+            <div class="dest-btn" onclick="shareAction('Instagram')">
+              <div class="dest-icon" style="background:#fce4ec;">
+                <svg viewBox="0 0 16 16" fill="none" stroke="#e91e8c" stroke-width="1.2">
+                  <rect x="2" y="2" width="12" height="12" rx="3.5"/>
+                  <circle cx="8" cy="8" r="3"/>
+                  <circle cx="11.5" cy="4.5" r="0.5" fill="#e91e8c"/>
+                </svg>
+              </div>
+              <div class="dest-name">Instagram</div>
+            </div>
+            <div class="dest-btn" onclick="shareAction('X/Twitter')">
+              <div class="dest-icon" style="background:#e8eaf6;">
+                <svg viewBox="0 0 16 16" fill="var(--ink)">
+                  <path d="M9.4 7.2L14.2 2h-1.2L8.8 6.4 5.4 2H1.6l5.1 7.4L1.6 14h1.2L7 9.4l3.6 4.6h3.8L9.4 7.2zm-1 1.4-.5-.7L3.2 2.9h1.7l3.3 4.7.5.7 4.1 5.9h-1.7L8.4 8.6z"/>
+                </svg>
+              </div>
+              <div class="dest-name">X / Twitter</div>
+            </div>
+            <div class="dest-btn" onclick="shareAction('Copiar link')">
+              <div class="dest-icon" style="background:#f3f0e8;">
+                <svg viewBox="0 0 16 16" fill="none" stroke="var(--ink-light)" stroke-width="1.2">
+                  <path d="M6 10a2 2 0 0 0 2.8.2l3-2.8a2 2 0 0 0-2.8-2.8L7.8 5.8M10 6a2 2 0 0 0-2.8-.2l-3 2.8a2 2 0 0 0 2.8 2.8l1.2-1.2"/>
+                </svg>
+              </div>
+              <div class="dest-name">Copiar link</div>
+            </div>
+            <div class="dest-btn save-full" onclick="shareAction('Salvar na galeria')">
+              <div class="dest-icon" style="background:transparent;">
+                <svg viewBox="0 0 16 16" fill="none" stroke="var(--ink-light)" stroke-width="1.2">
+                  <path d="M8 2v9M5 8l3 3 3-3M2 13h12"/>
+                </svg>
+              </div>
+              <div class="dest-name">Salvar na galeria</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screens -->
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="goTo('home')">
+      <svg viewBox="0 0 22 22" fill="none" stroke="var(--ink)" stroke-width="1.4">
+        <path d="M3 9.5L11 3l8 6.5V19a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+      </svg>
+      <div class="nav-label" style="color:var(--ink);">Início</div>
+      <div class="nav-dot"></div>
+    </div>
+    <div class="nav-item" onclick="showToast('Em breve: Favoritos')">
+      <svg viewBox="0 0 22 22" fill="none" stroke="var(--ink-faint)" stroke-width="1.4">
+        <path d="M11 18.5s-7-4.5-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 18 9.5c0 4.5-7 9-7 9z"/>
+      </svg>
+      <div class="nav-label">Salvos</div>
+    </div>
+    <div class="nav-item" onclick="showToast('Em breve: Histórico')">
+      <svg viewBox="0 0 22 22" fill="none" stroke="var(--ink-faint)" stroke-width="1.4">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="M11 7v4l3 2"/>
+      </svg>
+      <div class="nav-label">Histórico</div>
+    </div>
+    <div class="nav-item" onclick="showToast('Em breve: Configurações')">
+      <svg viewBox="0 0 22 22" fill="none" stroke="var(--ink-faint)" stroke-width="1.4">
+        <circle cx="11" cy="11" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      <div class="nav-label">Config</div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+</div>
+
+<script>
+// ── DATA ──
+const reflections = [
+  {
+    quote: "Não busques que os acontecimentos sejam como queres; deseja que aconteçam como são, e serás feliz.",
+    author: "Epicteto",
+    work: "Encheirídion",
+    tags: ["aceitação", "controle", "serenidade"],
+    meaning: "Epicteto ensina que o sofrimento nasce da resistência à realidade. Quando desejamos que as coisas sejam diferentes do que são, criamos uma guerra interna. A liberdade verdadeira vem de aceitar o que não podemos mudar.",
+    practice: "Hoje, quando algo não sair como planejado, faça esta pergunta: 'Isso está em meu controle?' Se não, respire fundo e redirecione sua atenção para sua resposta — a única coisa que é genuinamente sua.",
+    context: "Epicteto nasceu escravo em Hierápolis. Sua filosofia foi moldada pela experiência de não controlar nada exceto seus próprios pensamentos. Suas palavras foram registradas pelo discípulo Arriano no Encheirídion, ou 'Manual'.",
+    concepts: ["Dicotomia do controle", "Epicteto", "Liberdade interior", "Aceitação"]
+  },
+  {
+    quote: "Perde tempo quem ocupa o tempo com outra coisa que não seja viver melhor.",
+    author: "Marco Aurélio",
+    work: "Meditações",
+    tags: ["propósito", "tempo", "virtude"],
+    meaning: "Marco Aurélio nos lembra que o tempo é nosso bem mais precioso e não renovável. Gastá-lo com distrações, rancores ou frivolidades é desperdiçar a própria vida.",
+    practice: "Antes de cada nova atividade, pergunte: 'Isso me torna uma pessoa melhor ou contribui para algo de valor?' Não se trata de produtividade — trata-se de viver com intenção.",
+    context: "Marco Aurélio era Imperador de Roma, mas escrevia para si mesmo, não para a posteridade. As Meditações são um diário íntimo de um homem lutando contra si mesmo para ser melhor — mesmo tendo o poder absoluto.",
+    concepts: ["Marco Aurélio", "Memento Mori", "Virtude", "Intencionalidade"]
+  },
+  {
+    quote: "Comece a contar a sua idade a partir do momento em que começou a viver com sabedoria.",
+    author: "Sêneca",
+    work: "Epístolas Morais",
+    tags: ["sabedoria", "tempo", "crescimento"],
+    meaning: "Sêneca propõe uma contagem do tempo diferente: não pelos anos de existência biológica, mas pelos anos de vida consciente e sábia. Muitos vivem muito sem realmente viver.",
+    practice: "Identifique quando foi o momento em que você começou a questionar suas certezas e buscar crescer genuinamente. Essa é sua verdadeira data de nascimento. Que 'idade' você tem nessa contagem?",
+    context: "Sêneca escreveu as Epístolas Morais no final de sua vida, num período de retiro forçado por Nero. São cartas a seu amigo Lucílio — uma das coleções filosóficas mais ricas da Antiguidade.",
+    concepts: ["Sêneca", "Sabedoria", "Tempo", "Autoconhecimento"]
+  },
+  {
+    quote: "Se não está em seu poder proteger sua vida, está em seu poder desdenhar a morte.",
+    author: "Sêneca",
+    work: "Cartas a Lucílio",
+    tags: ["coragem", "morte", "liberdade"],
+    meaning: "A morte é inevitável, mas o medo da morte pode escravizar uma vida inteira. Ao aceitar nossa mortalidade com serenidade, libertamo-nos do maior dos medos e passamos a viver com mais plenitude.",
+    practice: "Reserve um momento hoje para meditar brevemente sobre sua própria mortalidade — não com morbidez, mas com gratidão. Que escolhas você faria diferente se soubesse que este é seu último mês?",
+    context: "Sêneca viveu sob imperadores tirânicos e foi eventualmente condenado à morte por Nero, seu ex-aluno. Ele morreu com a serenidade que pregava — suas últimas palavras tornaram-se lendárias.",
+    concepts: ["Memento Mori", "Coragem", "Sêneca", "Liberdade"]
+  }
+];
+
+// ── STATE ──
+let currentReflection = null;
+let isFav = false;
+let currentStyle = 'dark';
+
+// ── NAVIGATION ──
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active','left','right');
+    s.classList.add('right');
+  });
+  const target = document.getElementById('screen-' + screenId);
+  target.classList.remove('right','left');
+  target.classList.add('active');
+
+  // update share screen when navigating there
+  if (screenId === 'share' && currentReflection) {
+    document.getElementById('shareQuoteText').textContent = currentReflection.quote;
+    document.getElementById('shareAuthorText').textContent =
+      currentReflection.author + ' · ' + currentReflection.work;
+    document.getElementById('shareCornerDate').textContent = getTodayLabel();
+  }
+}
+
+// ── LOAD QUOTE ──
+function loadQuote() {
+  const body = document.getElementById('quoteBody');
+  body.classList.add('loading');
+  body.textContent = '';
+
+  setTimeout(() => {
+    const r = reflections[Math.floor(Math.random() * reflections.length)];
+    currentReflection = r;
+    isFav = false;
+    updateFavIcon();
+
+    body.classList.remove('loading');
+    body.textContent = r.quote;
+    document.getElementById('quoteAuthor').textContent = '— ' + r.author + ', ' + r.work;
+
+    const tagsEl = document.getElementById('quoteTags');
+    tagsEl.innerHTML = r.tags.map(t => `<span class="tag">#${t}</span>`).join('');
+
+    // populate explain screen
+    document.getElementById('miniQuote').textContent = r.quote;
+    document.getElementById('miniAuthor').textContent = '— ' + r.author + ', ' + r.work;
+    document.getElementById('explainMeaning').textContent = r.meaning;
+    document.getElementById('explainPractice').textContent = r.practice;
+    document.getElementById('explainContext').textContent = r.context;
+    document.getElementById('explainPills').innerHTML =
+      r.concepts.map(c => `<span class="cpill">${c}</span>`).join('');
+  }, 900);
+}
+
+// ── FAVORITES ──
+function toggleFav() {
+  isFav = !isFav;
+  updateFavIcon();
+  showToast(isFav ? 'Reflexão salva ✦' : 'Removida dos salvos');
+}
+function updateFavIcon() {
+  const icon = document.getElementById('favIcon');
+  icon.setAttribute('fill', isFav ? 'var(--gold)' : 'none');
+  icon.setAttribute('stroke', isFav ? 'var(--gold)' : 'var(--ink-mid)');
+}
+
+// ── SHARE STYLES ──
+const shareStyles = {
+  dark: { bg: 'var(--ink)', text: 'rgba(245,242,235,0.9)', qmark: 'var(--gold)', attr: 'rgba(201,168,76,0.65)' },
+  light: { bg: 'var(--parchment)', text: 'var(--ink)', qmark: 'var(--gold)', attr: 'var(--ink-light)' },
+  gold: { bg: '#c9a84c', text: '#1a1814', qmark: 'rgba(255,255,255,0.6)', attr: 'rgba(26,24,20,0.65)' }
+};
+function setStyle(el, style) {
+  document.querySelectorAll('.style-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  currentStyle = style;
+  const s = shareStyles[style];
+  const card = document.getElementById('shareCard');
+  card.style.background = s.bg;
+  document.getElementById('shareQuoteText').style.color = s.text;
+  document.querySelector('.img-qmark').style.color = s.qmark;
+  document.querySelector('.img-attribution').style.color = s.attr;
+  document.querySelector('.img-divider').style.background = s.qmark;
+}
+
+// ── SHARE ACTION ──
+function shareAction(dest) {
+  showToast('Abrindo ' + dest + '…');
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── UTILS ──
+function getTodayLabel() {
+  return new Date().toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('headerDay').textContent =
+    new Date().toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long' });
+
+  loadQuote();
+
+  setTimeout(() => {
+    document.getElementById('loadingOverlay').classList.add('hidden');
+  }, 1200);
+});
+</script>
+</body>
+</html>

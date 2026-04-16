@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stoicus — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --parchment:      #f5f2eb;
+  --parchment-dark: #ede9de;
+  --parchment-mid:  #e4dfd3;
+  --ink:            #1a1814;
+  --ink-mid:        #3d3a33;
+  --ink-light:      #7a7567;
+  --ink-faint:      #b8b2a5;
+  --gold:           #c9a84c;
+  --gold-light:     #e8d49a;
+  --gold-pale:      #f7f0dc;
+  --white-card:     #fdfcf9;
+  --border:         rgba(26,24,20,0.1);
+  --border-strong:  rgba(26,24,20,0.2);
+
+  --font-display: 'Cormorant Garamond', serif;
+  --font-ui:      'Jost', sans-serif;
+
+  --col: 72px;
+  --gutter: 24px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #e8e4da;
+  font-family: var(--font-ui);
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+/* ── LAYOUT ── */
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 32px 80px;
+}
+
+/* ── COVER ── */
+.cover {
+  background: var(--ink);
+  padding: 80px 48px 64px;
+  margin-bottom: 60px;
+  position: relative;
+  overflow: hidden;
+}
+.cover-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.cover-content { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; }
+.cover-eyebrow {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+  opacity: 0.8;
+}
+.cover-title {
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 300;
+  color: var(--parchment);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.cover-title span { color: var(--gold); }
+.cover-subtitle {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(245,242,235,0.5);
+  margin-bottom: 40px;
+}
+.cover-meta {
+  display: flex;
+  gap: 40px;
+  padding-top: 32px;
+  border-top: 0.5px solid rgba(201,168,76,0.25);
+}
+.cover-meta-item { }
+.cover-meta-label {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.5);
+  margin-bottom: 4px;
+}
+.cover-meta-value {
+  font-size: 13px;
+  color: rgba(245,242,235,0.7);
+  font-weight: 300;
+}
+
+/* ── TOC ── */
+.toc-card {
+  background: var(--white-card);
+  border: 0.5px solid var(--border);
+  padding: 32px 36px;
+  margin-bottom: 48px;
+}
+.toc-title {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 20px;
+}
+.toc-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 32px; }
+.toc-list li a {
+  text-decoration: none;
+  color: var(--ink-mid);
+  font-size: 13px;
+  font-weight: 400;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 0.5px solid var(--border);
+  transition: color 0.15s;
+}
+.toc-list li a:hover { color: var(--gold); }
+.toc-num { color: var(--gold); font-size: 10px; min-width: 20px; }
+
+/* ── SECTION STRUCTURE ── */
+.section { margin-bottom: 60px; }
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 28px;
+  padding-bottom: 12px;
+  border-bottom: 0.5px solid var(--border-strong);
+}
+.section-num {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  font-weight: 400;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--white-card);
+  border: 0.5px solid var(--border);
+  padding: 28px;
+  margin-bottom: 16px;
+}
+.card-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 20px;
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+/* ── COLORS ── */
+.color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+.color-swatch {
+  border: 0.5px solid var(--border);
+  overflow: hidden;
+}
+.swatch-block { height: 72px; }
+.swatch-info { background: var(--white-card); padding: 10px 12px; }
+.swatch-name { font-size: 11px; font-weight: 500; color: var(--ink-mid); margin-bottom: 2px; }
+.swatch-hex { font-size: 10px; color: var(--ink-faint); letter-spacing: 0.05em; font-family: monospace; }
+.swatch-use { font-size: 9px; color: var(--ink-faint); margin-top: 3px; line-height: 1.4; }
+
+/* gradient swatch */
+.grad-swatch { height: 56px; width: 100%; }
+
+/* ── TYPOGRAPHY ── */
+.type-specimen { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 0.5px solid var(--border); }
+.type-specimen:last-child { border: none; margin-bottom: 0; padding-bottom: 0; }
+.type-meta { display: flex; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+.type-tag {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  border: 0.5px solid var(--border-strong);
+  padding: 3px 8px;
+}
+.specimen-display { font-family: var(--font-display); font-weight: 300; font-size: 48px; line-height: 1.1; color: var(--ink); }
+.specimen-h1 { font-family: var(--font-display); font-weight: 400; font-size: 32px; line-height: 1.2; color: var(--ink); }
+.specimen-h2 { font-family: var(--font-display); font-weight: 400; font-size: 22px; line-height: 1.3; color: var(--ink); }
+.specimen-body { font-family: var(--font-display); font-size: 17px; font-weight: 300; line-height: 1.7; color: var(--ink-mid); }
+.specimen-ui { font-family: var(--font-ui); font-size: 14px; font-weight: 400; color: var(--ink-mid); }
+.specimen-label { font-family: var(--font-ui); font-size: 10px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); }
+.specimen-caption { font-family: var(--font-ui); font-size: 11px; font-weight: 300; color: var(--ink-light); }
+
+/* ── SPACING ── */
+.spacing-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid var(--border);
+}
+.spacing-row:last-child { border: none; }
+.spacing-block { background: var(--gold-light); flex-shrink: 0; }
+.spacing-label { font-size: 11px; color: var(--ink-mid); }
+.spacing-token { font-family: monospace; font-size: 11px; color: var(--gold); margin-left: auto; }
+
+/* ── COMPONENTS ── */
+
+/* Buttons */
+.btn-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.btn {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--ink);
+  color: var(--parchment);
+  border: none;
+  padding: 12px 22px;
+}
+.btn-primary:hover { background: var(--ink-mid); }
+.btn-secondary {
+  background: transparent;
+  color: var(--ink-mid);
+  border: 0.5px solid var(--border-strong);
+  padding: 11px 20px;
+}
+.btn-secondary:hover { background: var(--parchment-dark); }
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-light);
+  border: none;
+  padding: 11px 16px;
+}
+.btn-icon {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: transparent;
+  border: 0.5px solid var(--border-strong);
+  color: var(--ink-mid);
+  padding: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.btn-gold {
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  padding: 12px 22px;
+}
+
+/* Tags / Chips */
+.chip-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-family: var(--font-ui);
+  display: inline-block;
+}
+.chip-outline { border: 0.5px solid var(--border-strong); color: var(--ink-light); }
+.chip-filled { background: var(--parchment-dark); color: var(--ink-mid); border: none; }
+.chip-gold { background: var(--gold-pale); color: var(--gold); border: none; }
+.chip-dark { background: var(--ink); color: var(--parchment); border: none; }
+
+/* Cards showcase */
+.quote-card-demo {
+  background: var(--white-card);
+  border: 0.5px solid var(--border);
+  border-radius: 20px;
+  padding: 24px 20px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.quote-card-demo::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent);
+  opacity: 0.7;
+}
+.qm-demo { font-family: var(--font-display); font-size: 44px; line-height: 0.7; color: var(--gold-light); margin-bottom: 14px; }
+.qt-demo { font-family: var(--font-display); font-size: 17px; font-weight: 300; line-height: 1.55; color: var(--ink); margin-bottom: 16px; }
+.qa-demo { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-light); padding-top: 12px; border-top: 0.5px solid var(--border); }
+
+.hint-card-demo {
+  background: var(--white-card);
+  border: 0.5px solid var(--border);
+  border-radius: 14px;
+  padding: 13px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hint-icon-demo {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  background: var(--parchment-dark);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+.hint-txt-demo { flex: 1; }
+.hint-t { font-size: 12px; font-weight: 500; color: var(--ink-mid); }
+.hint-s { font-size: 10px; color: var(--ink-faint); }
+
+/* Image share card */
+.share-card-demo {
+  background: var(--ink);
+  border-radius: 16px;
+  padding: 22px 20px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.scg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.07) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.scv {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(10,9,8,0.6) 100%);
+}
+.sc-content { position: relative; z-index: 1; }
+.sc-qm { font-family: var(--font-display); font-size: 30px; line-height: 0.8; color: var(--gold); margin-bottom: 8px; }
+.sc-qt { font-family: var(--font-display); font-size: 14px; font-style: italic; line-height: 1.5; color: rgba(245,242,235,0.88); margin-bottom: 10px; }
+.sc-div { width: 24px; height: 0.5px; background: var(--gold); opacity: 0.5; margin-bottom: 8px; }
+.sc-at { font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(201,168,76,0.6); }
+
+/* ── ICONOGRAPHY ── */
+.icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 12px; }
+.icon-item { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 8px; background: var(--white-card); border: 0.5px solid var(--border); }
+.icon-item svg { width: 22px; height: 22px; }
+.icon-name { font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); text-align: center; }
+
+/* ── MOTION ── */
+.motion-row { display: flex; gap: 16px; margin-bottom: 12px; align-items: center; flex-wrap: wrap; }
+.motion-label { font-size: 11px; color: var(--ink-mid); min-width: 100px; }
+.motion-bar {
+  height: 3px;
+  background: var(--gold-light);
+  border-radius: 2px;
+  position: relative;
+  flex: 1;
+  overflow: visible;
+}
+.motion-val { font-family: monospace; font-size: 10px; color: var(--gold); min-width: 140px; }
+
+/* ── TONE / VOICE ── */
+.do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.do-block { background: rgba(201,168,76,0.06); border: 0.5px solid rgba(201,168,76,0.3); padding: 20px; }
+.dont-block { background: rgba(180,100,80,0.05); border: 0.5px solid rgba(180,100,80,0.2); padding: 20px; }
+.do-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 500; }
+.dont-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: #b46450; margin-bottom: 12px; font-weight: 500; }
+.voice-item { font-size: 13px; color: var(--ink-mid); line-height: 1.5; padding: 6px 0; border-bottom: 0.5px solid var(--border); }
+.voice-item:last-child { border: none; }
+
+/* ── BREAKPOINTS ── */
+.bp-table { width: 100%; border-collapse: collapse; }
+.bp-table th { text-align: left; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-faint); font-weight: 400; padding: 0 12px 12px 0; border-bottom: 0.5px solid var(--border-strong); }
+.bp-table td { padding: 10px 12px 10px 0; font-size: 12px; color: var(--ink-mid); border-bottom: 0.5px solid var(--border); vertical-align: top; }
+.bp-table tr:last-child td { border: none; }
+.mono { font-family: monospace; font-size: 11px; color: var(--gold); }
+
+/* ── DIVIDER ── */
+.divider { height: 0.5px; background: var(--border); margin: 32px 0; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--parchment-mid); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-grid"></div>
+  <div class="cover-content">
+    <div class="cover-eyebrow">Design System · v1.0</div>
+    <div class="cover-title">Stoic<span>us</span></div>
+    <div class="cover-subtitle">Guia de identidade visual e componentes</div>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Versão</div>
+        <div class="cover-meta-value">1.0.0</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Plataforma</div>
+        <div class="cover-meta-value">Mobile App · Landing Page</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Estilo</div>
+        <div class="cover-meta-value">Editorial Estoico · Minimalismo Refinado</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Data</div>
+        <div class="cover-meta-value">Abril 2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- TOC -->
+<div class="toc-card">
+  <div class="toc-title">Índice</div>
+  <ul class="toc-list">
+    <li><a href="#brand"><span class="toc-num">01</span>Princípios de Marca</a></li>
+    <li><a href="#colors"><span class="toc-num">02</span>Paleta de Cores</a></li>
+    <li><a href="#typography"><span class="toc-num">03</span>Tipografia</a></li>
+    <li><a href="#spacing"><span class="toc-num">04</span>Espaçamento</a></li>
+    <li><a href="#components"><span class="toc-num">05</span>Componentes</a></li>
+    <li><a href="#icons"><span class="toc-num">06</span>Iconografia</a></li>
+    <li><a href="#motion"><span class="toc-num">07</span>Movimento</a></li>
+    <li><a href="#voice"><span class="toc-num">08</span>Tom de Voz</a></li>
+    <li><a href="#breakpoints"><span class="toc-num">09</span>Breakpoints</a></li>
+    <li><a href="#tokens"><span class="toc-num">10</span>Tokens CSS</a></li>
+  </ul>
+</div>
+
+<!-- 01 BRAND -->
+<div class="section" id="brand">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Princípios de Marca</h2>
+  </div>
+
+  <div class="three-col" style="margin-bottom:16px;">
+    <div class="card">
+      <div class="card-label">Pilar I</div>
+      <div style="font-family:var(--font-display);font-size:22px;font-weight:400;color:var(--ink);margin-bottom:8px;">Clareza</div>
+      <div style="font-size:13px;color:var(--ink-light);line-height:1.65;">O estoicismo elimina o supérfluo. A interface deve respirar. Nada sem propósito permanece na tela.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Pilar II</div>
+      <div style="font-family:var(--font-display);font-size:22px;font-weight:400;color:var(--ink);margin-bottom:8px;">Profundidade</div>
+      <div style="font-size:13px;color:var(--ink-light);line-height:1.65;">Cada escolha visual remete à Antiguidade: pergaminho, tinta, ouro. O design carrega peso histórico sem ser pesado.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Pilar III</div>
+      <div style="font-family:var(--font-display);font-size:22px;font-weight:400;color:var(--ink);margin-bottom:8px;">Serenidade</div>
+      <div style="font-size:13px;color:var(--ink-light);line-height:1.65;">Nada pisca, nada grita. Animações são suaves e intencionais. O app convida à pausa, não à urgência.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Wordmark</div>
+    <div style="display:flex;gap:48px;align-items:flex-end;flex-wrap:wrap;">
+      <div>
+        <div style="font-family:var(--font-display);font-size:52px;font-weight:300;color:var(--ink);letter-spacing:0.04em;line-height:1;">Stoic<span style="color:var(--gold);">us</span></div>
+        <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint);margin-top:6px;">Versão principal — fundo claro</div>
+      </div>
+      <div style="background:var(--ink);padding:20px 28px;border-radius:4px;">
+        <div style="font-family:var(--font-display);font-size:52px;font-weight:300;color:var(--parchment);letter-spacing:0.04em;line-height:1;">Stoic<span style="color:var(--gold);">us</span></div>
+        <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(201,168,76,0.5);margin-top:6px;">Versão invertida — fundo escuro</div>
+      </div>
+      <div>
+        <div style="font-family:var(--font-display);font-size:52px;font-weight:300;color:var(--gold);letter-spacing:0.04em;line-height:1;">Stoic<span style="opacity:0.7;">us</span></div>
+        <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint);margin-top:6px;">Versão dourada — uso especial</div>
+      </div>
+    </div>
+    <div style="margin-top:20px;padding-top:16px;border-top:0.5px solid var(--border);font-size:11px;color:var(--ink-faint);line-height:1.6;">
+      <strong style="font-weight:500;color:var(--ink-light);">Regra:</strong> O "us" final é sempre destacado em dourado — representa a conexão entre o legado estoico e o usuário contemporâneo.
+    </div>
+  </div>
+</div>
+
+<!-- 02 COLORS -->
+<div class="section" id="colors">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Paleta de Cores</h2>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-label">Cores Primárias</div>
+    <div class="color-grid">
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#1a1814;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Ink</div>
+          <div class="swatch-hex">#1a1814</div>
+          <div class="swatch-use">Texto principal, fundos dark, botão primário</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#f5f2eb;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Parchment</div>
+          <div class="swatch-hex">#f5f2eb</div>
+          <div class="swatch-use">Background principal do app</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#c9a84c;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Gold</div>
+          <div class="swatch-hex">#c9a84c</div>
+          <div class="swatch-use">Accents, destaques, wordmark</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#fdfcf9;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">White Card</div>
+          <div class="swatch-hex">#fdfcf9</div>
+          <div class="swatch-use">Cards, surfaces elevadas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-label">Escala de Tinta</div>
+    <div class="color-grid">
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#3d3a33;"></div>
+        <div class="swatch-info"><div class="swatch-name">Ink Mid</div><div class="swatch-hex">#3d3a33</div><div class="swatch-use">Textos secundários</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#7a7567;"></div>
+        <div class="swatch-info"><div class="swatch-name">Ink Light</div><div class="swatch-hex">#7a7567</div><div class="swatch-use">Labels, metadados</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#b8b2a5;"></div>
+        <div class="swatch-info"><div class="swatch-name">Ink Faint</div><div class="swatch-hex">#b8b2a5</div><div class="swatch-use">Placeholders, hints</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#ede9de;"></div>
+        <div class="swatch-info"><div class="swatch-name">Parchment Dark</div><div class="swatch-hex">#ede9de</div><div class="swatch-use">Hover states, dividers</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-label">Escala Dourada</div>
+    <div class="color-grid">
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#c9a84c;"></div>
+        <div class="swatch-info"><div class="swatch-name">Gold</div><div class="swatch-hex">#c9a84c</div><div class="swatch-use">Accent principal</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#e8d49a;"></div>
+        <div class="swatch-info"><div class="swatch-name">Gold Light</div><div class="swatch-hex">#e8d49a</div><div class="swatch-use">Quote marks, ornamentos</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#f7f0dc;"></div>
+        <div class="swatch-info"><div class="swatch-name">Gold Pale</div><div class="swatch-hex">#f7f0dc</div><div class="swatch-use">Tags douradas, backgrounds sutis</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Gradientes</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div>
+        <div style="height:48px;border-radius:4px;background:linear-gradient(90deg,#c9a84c,#e8d49a,transparent);margin-bottom:6px;"></div>
+        <div style="font-size:10px;color:var(--ink-faint);">Top accent de card — <span class="mono">linear-gradient(90deg, #c9a84c, #e8d49a, transparent)</span></div>
+      </div>
+      <div>
+        <div style="height:48px;border-radius:4px;background:radial-gradient(ellipse at center, transparent 40%, rgba(10,9,8,0.65) 100%);background-color:#1a1814;margin-bottom:6px;"></div>
+        <div style="font-size:10px;color:var(--ink-faint);">Vignette do share card — <span class="mono">radial-gradient(ellipse, transparent 40%, rgba(10,9,8,0.65) 100%)</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 TYPOGRAPHY -->
+<div class="section" id="typography">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Tipografia</h2>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-label">Famílias Tipográficas</div>
+    <div class="two-col">
+      <div style="padding:20px;background:var(--parchment);border:0.5px solid var(--border);">
+        <div style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:12px;">Display / Editorial</div>
+        <div style="font-family:var(--font-display);font-size:32px;font-weight:300;color:var(--ink);line-height:1.1;margin-bottom:8px;">Cormorant Garamond</div>
+        <div style="font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--ink-light);margin-bottom:16px;">Light 300 · Regular 400 · Medium 500</div>
+        <div style="font-size:10px;color:var(--ink-faint);line-height:1.6;">Para citações, títulos, wordmark, corpo de texto filosófico. Carrega o peso da Antiguidade com elegância.</div>
+      </div>
+      <div style="padding:20px;background:var(--parchment);border:0.5px solid var(--border);">
+        <div style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:12px;">Interface / UI</div>
+        <div style="font-family:var(--font-ui);font-size:28px;font-weight:300;color:var(--ink);line-height:1.1;margin-bottom:8px;">Jost</div>
+        <div style="font-family:var(--font-ui);font-size:14px;color:var(--ink-light);margin-bottom:16px;">Light 300 · Regular 400 · Medium 500</div>
+        <div style="font-size:10px;color:var(--ink-faint);line-height:1.6;">Para labels, navegação, botões, metadados. Limpo e moderno, complementa sem competir com Cormorant.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Escala Tipográfica</div>
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-tag">Display</span><span class="type-tag">64px</span><span class="type-tag">Cormorant 300</span>
+      </div>
+      <div class="specimen-display">A virtude é a única riqueza verdadeira.</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-tag">H1</span><span class="type-tag">32px</span><span class="type-tag">Cormorant 400</span>
+      </div>
+      <div class="specimen-h1">Reflexões Estoicas</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-tag">H2 · Citação</span><span class="type-tag">22px</span><span class="type-tag">Cormorant 300</span>
+      </div>
+      <div class="specimen-h2">Não busques que os acontecimentos sejam como queres.</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-tag">Body</span><span class="type-tag">17px</span><span class="type-tag">Cormorant 300, lh 1.7</span>
+      </div>
+      <div class="specimen-body">Epicteto ensina que o sofrimento nasce da resistência à realidade. Quando desejamos que as coisas sejam diferentes do que são, criamos uma guerra interna. A liberdade verdadeira vem de aceitar o que não podemos mudar.</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-tag">UI Text</span><span class="type-tag">14px</span><span class="type-tag">Jost 400</span>
+      </div>
+      <div class="specimen-ui">Entender a reflexão · Ver explicação e contexto histórico</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-tag">Label</span><span class="type-tag">10px</span><span class="type-tag">Jost 400, ls 0.18em, uppercase</span>
+      </div>
+      <div class="specimen-label">Reflexão · Autor · Compartilhar · Contexto histórico</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-tag">Caption</span><span class="type-tag">11px</span><span class="type-tag">Jost 300</span>
+      </div>
+      <div class="specimen-caption">Epicteto · Encheirídion · Século I d.C.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 SPACING -->
+<div class="section" id="spacing">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Espaçamento</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Escala de Espaços</div>
+    <div class="spacing-row">
+      <div class="spacing-block" style="width:4px;height:16px;"></div>
+      <div class="spacing-label">Micro — entre ícone e label</div>
+      <div class="spacing-val mono">4px</div>
+    </div>
+    <div class="spacing-row">
+      <div class="spacing-block" style="width:8px;height:16px;"></div>
+      <div class="spacing-label">XS — gap interno de chips</div>
+      <div class="spacing-val mono">8px</div>
+    </div>
+    <div class="spacing-row">
+      <div class="spacing-block" style="width:12px;height:16px;"></div>
+      <div class="spacing-label">SM — gap entre elementos de linha</div>
+      <div class="spacing-val mono">12px</div>
+    </div>
+    <div class="spacing-row">
+      <div class="spacing-block" style="width:16px;height:16px;"></div>
+      <div class="spacing-label">Base — padding horizontal de cards</div>
+      <div class="spacing-val mono">16px</div>
+    </div>
+    <div class="spacing-row">
+      <div class="spacing-block" style="width:20px;height:16px;"></div>
+      <div class="spacing-label">MD — padding de cards principais</div>
+      <div class="spacing-val mono">20–24px</div>
+    </div>
+    <div class="spacing-row">
+      <div class="spacing-block" style="width:28px;height:16px;"></div>
+      <div class="spacing-label">LG — padding de seções</div>
+      <div class="spacing-val mono">28–32px</div>
+    </div>
+    <div class="spacing-row">
+      <div class="spacing-block" style="width:48px;height:16px;"></div>
+      <div class="spacing-label">XL — espaçamento entre seções</div>
+      <div class="spacing-val mono">48–60px</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <div class="card-label">Border Radius</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;">
+      <div style="text-align:center;">
+        <div style="width:48px;height:48px;background:var(--parchment-dark);border-radius:4px;margin:0 auto 8px;"></div>
+        <div style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);">4px<br>Tags</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:56px;height:48px;background:var(--parchment-dark);border-radius:10px;margin:0 auto 8px;"></div>
+        <div style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);">10px<br>Botões</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:64px;height:48px;background:var(--parchment-dark);border-radius:14px;margin:0 auto 8px;"></div>
+        <div style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);">14px<br>Hint cards</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:72px;height:56px;background:var(--parchment-dark);border-radius:20px;margin:0 auto 8px;"></div>
+        <div style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);">20px<br>Quote cards</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:72px;height:56px;background:var(--parchment-dark);border-radius:50%;margin:0 auto 8px;"></div>
+        <div style="font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);">50%<br>Avatares</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 COMPONENTS -->
+<div class="section" id="components">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Componentes</h2>
+  </div>
+
+  <!-- Buttons -->
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-label">Botões</div>
+    <div class="btn-row" style="margin-bottom:16px;">
+      <button class="btn btn-primary">Compartilhar</button>
+      <button class="btn btn-secondary">Nova reflexão</button>
+      <button class="btn btn-ghost">Pular</button>
+      <button class="btn btn-gold">Começar</button>
+      <button class="btn btn-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.3">
+          <path d="M9 15.5s-6-3.9-6-7.8a3.5 3.5 0 0 1 6-2.3 3.5 3.5 0 0 1 6 2.3c0 3.9-6 7.8-6 7.8z"/>
+        </svg>
+      </button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr) auto;gap:12px;font-size:10px;color:var(--ink-faint);letter-spacing:0.08em;">
+      <div>Primário · fundo escuro</div>
+      <div>Secundário · borda</div>
+      <div>Ghost · sem borda</div>
+      <div>Dourado · CTA da landing</div>
+      <div>Ícone · circular</div>
+    </div>
+  </div>
+
+  <!-- Tags / Chips -->
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-label">Tags & Chips</div>
+    <div class="chip-row" style="margin-bottom:12px;">
+      <span class="chip chip-outline">#aceitação</span>
+      <span class="chip chip-outline">#controle</span>
+      <span class="chip chip-outline">#serenidade</span>
+    </div>
+    <div class="chip-row" style="margin-bottom:12px;">
+      <span class="chip chip-filled">Dicotomia do controle</span>
+      <span class="chip chip-filled">Epicteto</span>
+      <span class="chip chip-filled">Liberdade interior</span>
+    </div>
+    <div class="chip-row" style="margin-bottom:12px;">
+      <span class="chip chip-gold">Aceitação</span>
+      <span class="chip chip-gold">Virtude</span>
+    </div>
+    <div class="chip-row">
+      <span class="chip chip-dark">Hoje</span>
+      <span class="chip chip-dark">Selecionado</span>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-label">Quote Card</div>
+    <div style="max-width:320px;">
+      <div class="quote-card-demo">
+        <div class="qm-demo">"</div>
+        <div class="qt-demo">Não busques que os acontecimentos sejam como queres; deseja que aconteçam como são.</div>
+        <div class="qa-demo">
+          — Epicteto · Encheirídion
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <span class="chip chip-outline" style="font-size:9px;">#aceitação</span>
+            <span class="chip chip-outline" style="font-size:9px;">#controle</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding-top:12px;border-top:0.5px solid var(--border);font-size:11px;color:var(--ink-faint);line-height:1.65;">
+      <strong style="font-weight:500;color:var(--ink-light);">Detalhes:</strong> Fundo #fdfcf9, borda 0.5px rgba(26,24,20,0.1), border-radius 20px, accent dourado 2px no topo. Elemento interativo — tap navega para explicação.
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-label">Hint Card</div>
+    <div style="max-width:320px;">
+      <div class="hint-card-demo">
+        <div class="hint-icon-demo">💡</div>
+        <div class="hint-txt-demo">
+          <div class="hint-t">Entender a reflexão</div>
+          <div class="hint-s">Ver explicação e contexto histórico</div>
+        </div>
+        <div style="font-size:16px;color:var(--ink-faint);">›</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-label">Share Image Card</div>
+    <div style="max-width:240px;">
+      <div class="share-card-demo">
+        <div class="scg"></div>
+        <div class="scv"></div>
+        <div class="sc-content">
+          <div class="sc-qm">"</div>
+          <div class="sc-qt">Não busques que os acontecimentos sejam como queres.</div>
+          <div class="sc-div"></div>
+          <div class="sc-at">Epicteto · Encheirídion</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding-top:12px;border-top:0.5px solid var(--border);font-size:11px;color:var(--ink-faint);line-height:1.65;">
+      <strong style="font-weight:500;color:var(--ink-light);">Variações:</strong> Escuro (padrão), Claro (parchment bg / ink text), Dourado (gold bg / ink text). Grid sutil de linhas douradas 7% opacidade como textura de fundo.
+    </div>
+  </div>
+
+  <!-- Nav Bar -->
+  <div class="card">
+    <div class="card-label">Bottom Navigation</div>
+    <div style="display:flex;justify-content:space-around;padding:14px 0;background:var(--parchment);border:0.5px solid var(--border);border-radius:12px;">
+      <div style="text-align:center;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="var(--ink)" stroke-width="1.4" style="display:block;margin:0 auto 3px;">
+          <path d="M3 9.5L11 3l8 6.5V19a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+        </svg>
+        <div style="font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);">Início</div>
+        <div style="width:4px;height:4px;border-radius:50%;background:var(--gold);margin:3px auto 0;"></div>
+      </div>
+      <div style="text-align:center;opacity:0.4;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="var(--ink)" stroke-width="1.4" style="display:block;margin:0 auto 3px;">
+          <path d="M11 18.5s-7-4.5-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 18 9.5c0 4.5-7 9-7 9z"/>
+        </svg>
+        <div style="font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);">Salvos</div>
+      </div>
+      <div style="text-align:center;opacity:0.4;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="var(--ink)" stroke-width="1.4" style="display:block;margin:0 auto 3px;">
+          <circle cx="11" cy="11" r="8"/><path d="M11 7v4l3 2"/>
+        </svg>
+        <div style="font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);">Histórico</div>
+      </div>
+      <div style="text-align:center;opacity:0.4;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="var(--ink)" stroke-width="1.4" style="display:block;margin:0 auto 3px;">
+          <circle cx="11" cy="11" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        <div style="font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);">Config</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:11px;color:var(--ink-faint);line-height:1.6;">Item ativo: ícone em var(--ink), dot dourado abaixo. Inativos: opacidade reduzida, sem dot.</div>
+  </div>
+</div>
+
+<!-- 06 ICONS -->
+<div class="section" id="icons">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2 class="section-title">Iconografia</h2>
+  </div>
+  <div class="card">
+    <div class="card-label">Estilo: Stroke 1.3–1.4px · Sem fill · Cantos arredondados</div>
+    <div class="icon-grid">
+      <div class="icon-item">
+        <svg viewBox="0 0 22 22" fill="none" stroke="var(--ink-mid)" stroke-width="1.4"><path d="M3 9.5L11 3l8 6.5V19a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/></svg>
+        <div class="icon-name">Início</div>
+      </div>
+      <div class="icon-item">
+        <svg viewBox="0 0 22 22" fill="none" stroke="var(--ink-mid)" stroke-width="1.4"><path d="M11 18.5s-7-4.5-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 18 9.5c0 4.5-7 9-7 9z"/></svg>
+        <div class="icon-name">Favorito</div>
+      </div>
+      <div class="icon-item">
+        <svg viewBox="0 0 22 22" fill="none" stroke="var(--ink-mid)" stroke-width="1.4"><circle cx="11" cy="11" r="8"/><path d="M11 7v4l3 2"/></svg>
+        <div class="icon-name">Histórico</div>
+      </div>
+      <div class="icon-item">
+        <svg viewBox="0 0 22 22" fill="none" stroke="var(--ink-mid)" stroke-width="1.4"><path d="M4 16v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2M11 3v11M7 7l4-4 4 4"/></svg>
+        <div class="icon-name">Compartilhar</div>
+      </div>
+      <div class="icon-item">
+        <svg viewBox="0 0 22 22" fill="none" stroke="var(--ink-mid)" stroke-width="1.4"><path d="M4 11a7 7 0 1 1 1.5 4.3M4 15.5V11h4.5"/></svg>
+        <div class="icon-name">Renovar</div>
+      </div>
+      <div class="icon-item">
+        <svg viewBox="0 0 22 22" fill="none" stroke="var(--ink-mid)" stroke-width="1.4"><circle cx="11" cy="11" r="8"/><path d="M11 8v.01M11 11v4"/></svg>
+        <div class="icon-name">Info</div>
+      </div>
+      <div class="icon-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="var(--ink-mid)" stroke-width="1.3"><path d="M10 3L5 8l5 5"/></svg>
+        <div class="icon-name">Voltar</div>
+      </div>
+      <div class="icon-item">
+        <svg viewBox="0 0 22 22" fill="none" stroke="var(--ink-mid)" stroke-width="1.4"><path d="M11 3v11M5 9l6 6 6-6M3 19h16"/></svg>
+        <div class="icon-name">Download</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding-top:12px;border-top:0.5px solid var(--border);font-size:11px;color:var(--ink-faint);line-height:1.65;">
+      Use <strong style="color:var(--ink-light);">stroke-linecap="round"</strong> e <strong style="color:var(--ink-light);">stroke-linejoin="round"</strong> em todos os ícones. Tamanho padrão: 22×22px no app, 24×24px na landing page.
+    </div>
+  </div>
+</div>
+
+<!-- 07 MOTION -->
+<div class="section" id="motion">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2 class="section-title">Movimento</h2>
+  </div>
+  <div class="card">
+    <div class="card-label">Curvas & Durações</div>
+    <div class="motion-row">
+      <div class="motion-label">Navegação</div>
+      <div class="motion-bar" style="background:linear-gradient(90deg,var(--gold-light) 0%,var(--gold) 100%);height:3px;"></div>
+      <div class="motion-val">450ms · cubic-bezier(0.25, 0.46, 0.45, 0.94)</div>
+    </div>
+    <div class="motion-row">
+      <div class="motion-label">Fade / Load</div>
+      <div class="motion-bar" style="background:linear-gradient(90deg,var(--gold-light) 0%,var(--gold) 60%);height:3px;"></div>
+      <div class="motion-val">500ms · ease · stagger 0.1s</div>
+    </div>
+    <div class="motion-row">
+      <div class="motion-label">Hover / Tap</div>
+      <div class="motion-bar" style="background:linear-gradient(90deg,var(--gold-light) 0%,var(--gold) 30%);height:3px;"></div>
+      <div class="motion-val">150ms · ease</div>
+    </div>
+    <div class="motion-row">
+      <div class="motion-label">Toast</div>
+      <div class="motion-bar" style="background:linear-gradient(90deg,var(--gold-light) 0%,var(--gold) 40%);height:3px;"></div>
+      <div class="motion-val">250ms · ease · auto-dismiss 2.2s</div>
+    </div>
+    <div class="motion-row">
+      <div class="motion-label">Shimmer</div>
+      <div class="motion-bar" style="background:linear-gradient(90deg,var(--gold-light) 0%,var(--gold) 80%);height:3px;"></div>
+      <div class="motion-val">1.4s · linear · loop (skeleton loading)</div>
+    </div>
+    <div style="margin-top:16px;padding-top:12px;border-top:0.5px solid var(--border);font-size:11px;color:var(--ink-faint);line-height:1.65;">
+      <strong style="color:var(--ink-light);">Princípio:</strong> Animações devem sentir-se como folhas caindo — naturais, suaves, sem mecânica artificial. Nunca bounce, nunca elástico. O app convida à pausa.
+    </div>
+  </div>
+</div>
+
+<!-- 08 VOICE -->
+<div class="section" id="voice">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2 class="section-title">Tom de Voz</h2>
+  </div>
+  <div class="card">
+    <div class="card-label">Diretrizes de Escrita</div>
+    <div class="do-dont">
+      <div class="do-block">
+        <div class="do-label">✦ Faça</div>
+        <div class="voice-item">Use presente do indicativo com força: "Entender a reflexão"</div>
+        <div class="voice-item">Frases curtas, sem verbosidade: "Ver explicação e contexto"</div>
+        <div class="voice-item">Tom contemplativo, nunca urgente</div>
+        <div class="voice-item">Labels em maiúsculas esparsas para estrutura: "HOJE · EPICTETO"</div>
+        <div class="voice-item">Convide à reflexão: "Que escolhas você faria?"</div>
+      </div>
+      <div class="dont-block">
+        <div class="dont-label">✕ Evite</div>
+        <div class="voice-item">Exclamações: "Nova reflexão incrível!"</div>
+        <div class="voice-item">Linguagem de app gamificado: "Ganhe pontos!"</div>
+        <div class="voice-item">Tecnicidades desnecessárias no UI</div>
+        <div class="voice-item">Pressão ou urgência: "Compartilhe agora!"</div>
+        <div class="voice-item">Emojis (exceto em onboarding descontraído)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 09 BREAKPOINTS -->
+<div class="section" id="breakpoints">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2 class="section-title">Breakpoints</h2>
+  </div>
+  <div class="card">
+    <table class="bp-table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Min Width</th>
+          <th>Contexto</th>
+          <th>Colunas</th>
+          <th>Padding lateral</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Mobile</strong></td>
+          <td class="mono">320px</td>
+          <td>App principal · iPhone SE</td>
+          <td>1 coluna</td>
+          <td class="mono">16px</td>
+        </tr>
+        <tr>
+          <td><strong>Mobile L</strong></td>
+          <td class="mono">390px</td>
+          <td>iPhone 14 Pro · alvo primário</td>
+          <td>1 coluna</td>
+          <td class="mono">20px</td>
+        </tr>
+        <tr>
+          <td><strong>Tablet</strong></td>
+          <td class="mono">768px</td>
+          <td>iPad · landing page</td>
+          <td>2 colunas</td>
+          <td class="mono">32px</td>
+        </tr>
+        <tr>
+          <td><strong>Desktop</strong></td>
+          <td class="mono">1024px</td>
+          <td>Landing page principal</td>
+          <td>12 colunas · 72px</td>
+          <td class="mono">48px</td>
+        </tr>
+        <tr>
+          <td><strong>Wide</strong></td>
+          <td class="mono">1280px</td>
+          <td>Max-width landing: 960px</td>
+          <td>12 colunas</td>
+          <td class="mono">auto</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 10 TOKENS -->
+<div class="section" id="tokens">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2 class="section-title">Tokens CSS</h2>
+  </div>
+  <div class="card">
+    <div class="card-label">Variáveis — cole no :root do seu projeto</div>
+    <div style="background:var(--ink);border-radius:8px;padding:24px 20px;overflow-x:auto;">
+<pre style="font-family:monospace;font-size:12px;line-height:1.8;color:rgba(245,242,235,0.85);margin:0;white-space:pre-wrap;"><span style="color:var(--gold);">:root {</span>
+  <span style="color:rgba(245,242,235,0.4);">/* ── Cores ── */</span>
+  --stoic-parchment:       <span style="color:var(--gold-light);">#f5f2eb</span>;  <span style="color:rgba(245,242,235,0.3);">/* bg principal */</span>
+  --stoic-parchment-dark:  <span style="color:var(--gold-light);">#ede9de</span>;  <span style="color:rgba(245,242,235,0.3);">/* hover, dividers */</span>
+  --stoic-parchment-mid:   <span style="color:var(--gold-light);">#e4dfd3</span>;  <span style="color:rgba(245,242,235,0.3);">/* scrollbar, badges */</span>
+  --stoic-ink:             <span style="color:var(--gold-light);">#1a1814</span>;  <span style="color:rgba(245,242,235,0.3);">/* texto principal, bg dark */</span>
+  --stoic-ink-mid:         <span style="color:var(--gold-light);">#3d3a33</span>;  <span style="color:rgba(245,242,235,0.3);">/* texto secundário */</span>
+  --stoic-ink-light:       <span style="color:var(--gold-light);">#7a7567</span>;  <span style="color:rgba(245,242,235,0.3);">/* labels, meta */</span>
+  --stoic-ink-faint:       <span style="color:var(--gold-light);">#b8b2a5</span>;  <span style="color:rgba(245,242,235,0.3);">/* placeholder, hint */</span>
+  --stoic-gold:            <span style="color:var(--gold-light);">#c9a84c</span>;  <span style="color:rgba(245,242,235,0.3);">/* accent primário */</span>
+  --stoic-gold-light:      <span style="color:var(--gold-light);">#e8d49a</span>;  <span style="color:rgba(245,242,235,0.3);">/* quote marks, ornamentos */</span>
+  --stoic-gold-pale:       <span style="color:var(--gold-light);">#f7f0dc</span>;  <span style="color:rgba(245,242,235,0.3);">/* bg tags douradas */</span>
+  --stoic-white-card:      <span style="color:var(--gold-light);">#fdfcf9</span>;  <span style="color:rgba(245,242,235,0.3);">/* superfície de cards */</span>
+
+  <span style="color:rgba(245,242,235,0.4);">/* ── Bordas ── */</span>
+  --stoic-border:          <span style="color:var(--gold-light);">rgba(26,24,20,0.10)</span>;
+  --stoic-border-strong:   <span style="color:var(--gold-light);">rgba(26,24,20,0.20)</span>;
+
+  <span style="color:rgba(245,242,235,0.4);">/* ── Tipografia ── */</span>
+  --stoic-font-display:    <span style="color:var(--gold-light);">'Cormorant Garamond', serif</span>;
+  --stoic-font-ui:         <span style="color:var(--gold-light);">'Jost', sans-serif</span>;
+
+  <span style="color:rgba(245,242,235,0.4);">/* ── Radius ── */</span>
+  --stoic-radius-tag:      <span style="color:var(--gold-light);">4px</span>;
+  --stoic-radius-btn:      <span style="color:var(--gold-light);">10px</span>;
+  --stoic-radius-hint:     <span style="color:var(--gold-light);">14px</span>;
+  --stoic-radius-card:     <span style="color:var(--gold-light);">20px</span>;
+
+  <span style="color:rgba(245,242,235,0.4);">/* ── Animações ── */</span>
+  --stoic-ease:            <span style="color:var(--gold-light);">cubic-bezier(0.25, 0.46, 0.45, 0.94)</span>;
+  --stoic-duration-fast:   <span style="color:var(--gold-light);">150ms</span>;
+  --stoic-duration-base:   <span style="color:var(--gold-light);">300ms</span>;
+  --stoic-duration-nav:    <span style="color:var(--gold-light);">450ms</span>;
+<span style="color:var(--gold);">}</span></pre>
+    </div>
+    <div style="margin-top:16px;font-size:11px;color:var(--ink-faint);line-height:1.65;">
+      Prefixo <strong style="color:var(--ink-light);">--stoic-</strong> para evitar conflito em projetos que usem outros design systems (ex: shadcn, Tailwind). Importe Cormorant Garamond e Jost via Google Fonts antes de usar.
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:48px 0 24px;border-top:0.5px solid var(--border);">
+  <div style="font-family:var(--font-display);font-size:28px;font-weight:300;color:var(--ink-light);margin-bottom:8px;">Stoic<span style="color:var(--gold);">us</span></div>
+  <div style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-faint);">Design System v1.0 · Abril 2026</div>
+</div>
+
+</div><!-- /page -->
+</body>
+</html>
