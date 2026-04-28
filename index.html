@@ -548,6 +548,134 @@ nav {
 }
 .privacy-section a:hover { color: var(--ink); }
 
+/* ── SUPPORT ── */
+.support {
+  padding: 100px 0;
+  border-top: 0.5px solid var(--border-strong);
+}
+.support .section-label { margin-bottom: 12px; }
+.support-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.support-faq {}
+.faq-list { margin-top: 0; }
+details.faq-item {
+  border-bottom: 0.5px solid var(--border);
+}
+details.faq-item:first-child {
+  border-top: 0.5px solid var(--border);
+}
+details.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+  cursor: pointer;
+  list-style: none;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink-mid);
+  line-height: 1.4;
+  transition: color 0.15s;
+}
+details.faq-item summary::-webkit-details-marker { display: none; }
+details.faq-item summary:hover { color: var(--ink); }
+.faq-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  position: relative;
+  color: var(--gold);
+}
+.faq-icon::before,
+.faq-icon::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+  border-radius: 1px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.faq-icon::before { width: 10px; height: 1px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.faq-icon::after  { width: 1px; height: 10px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+details[open] .faq-icon::after { transform: translate(-50%, -50%) rotate(90deg); opacity: 0; }
+.faq-body {
+  padding: 0 0 18px;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--ink-light);
+  line-height: 1.75;
+}
+.support-contact {
+  position: sticky;
+  top: 88px;
+}
+.contact-card {
+  background: var(--white-card);
+  border: 0.5px solid var(--border);
+  padding: 40px 36px;
+}
+.contact-card .section-label { margin-bottom: 8px; }
+.contact-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+.contact-body {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--ink-light);
+  line-height: 1.75;
+  margin-bottom: 28px;
+}
+.contact-email-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--parchment);
+  border: 0.5px solid var(--border-strong);
+  margin-bottom: 20px;
+}
+.contact-email-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--gold-pale);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--gold);
+}
+.contact-email-link {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink-mid);
+  text-decoration: none;
+  word-break: break-all;
+  transition: color 0.15s;
+}
+.contact-email-link:hover { color: var(--gold); }
+.contact-note {
+  font-size: 11px;
+  color: var(--ink-faint);
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 768px) {
+  .support-inner { grid-template-columns: 1fr; gap: 48px; }
+  .support-contact { position: static; }
+}
+
 /* ── FOOTER ── */
 footer {
   padding: 48px 0;
@@ -619,6 +747,7 @@ footer {
         <li><a href="#features" data-i18n="nav.features">Features</a></li>
         <li><a href="#download" data-i18n="nav.download">Download</a></li>
         <li><a href="#privacy" data-i18n="nav.privacy">Privacy</a></li>
+        <li><a href="#support" data-i18n="nav.support">Support</a></li>
       </ul>
       <div class="lang-toggle">
         <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
@@ -815,6 +944,68 @@ footer {
   </div>
 </section>
 
+<!-- SUPPORT -->
+<section class="support" id="support">
+  <div class="container">
+    <div class="section-label" data-i18n="support.label">Support</div>
+    <div class="support-inner">
+
+      <div class="support-faq">
+        <h2 class="section-title" data-i18n="support.title">Frequently asked<br>questions.</h2>
+        <div class="faq-list">
+
+          <details class="faq-item">
+            <summary><span data-i18n="faq.q1.q">Is Stoiquotes free?</span><span class="faq-icon"></span></summary>
+            <p class="faq-body" data-i18n="faq.q1.a">Yes. Stoiquotes is completely free to download and use. There are no ads, no subscriptions, and no in-app purchases.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary><span data-i18n="faq.q2.q">Does the app require an internet connection?</span><span class="faq-icon"></span></summary>
+            <p class="faq-body" data-i18n="faq.q2.a">No. Stoiquotes works entirely offline. The full quote library is bundled with the app, so you can read anytime, anywhere — even in airplane mode.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary><span data-i18n="faq.q3.q">Which philosophers are included?</span><span class="faq-icon"></span></summary>
+            <p class="faq-body" data-i18n="faq.q3.a">The library covers the primary Stoic canon: Marcus Aurelius, Seneca, Epictetus, Zeno of Citium, Chrysippus, Musonius Rufus, Cleanthes, and Cato the Younger, among others.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary><span data-i18n="faq.q4.q">How do I save a favorite quote?</span><span class="faq-icon"></span></summary>
+            <p class="faq-body" data-i18n="faq.q4.a">Tap the bookmark icon on any quote card to add it to your favorites. Your saved quotes are stored locally on your device and are always available offline.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary><span data-i18n="faq.q5.q">Can I share quotes with friends?</span><span class="faq-icon"></span></summary>
+            <p class="faq-body" data-i18n="faq.q5.a">Yes. Every quote can be shared as a beautifully formatted image or plain text via the share button. The image uses the Stoiquotes visual identity and is designed to look great on any social platform.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary><span data-i18n="faq.q6.q">Is my data private?</span><span class="faq-icon"></span></summary>
+            <p class="faq-body" data-i18n="faq.q6.a">Absolutely. We do not collect any personal data. Your reading history, favorites, and notes never leave your device. See our Privacy Policy for full details.</p>
+          </details>
+
+        </div>
+      </div>
+
+      <div class="support-contact">
+        <div class="contact-card">
+          <div class="section-label" data-i18n="contact.label">Still have questions?</div>
+          <h3 class="contact-title" data-i18n="contact.title">We're here<br>to help.</h3>
+          <p class="contact-body" data-i18n="contact.body">Didn't find what you were looking for? Send us an email and we'll get back to you as soon as possible.</p>
+          <div class="contact-email-row">
+            <div class="contact-email-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </div>
+            <a class="contact-email-link" href="mailto:jeronimo.nascimento.dev@gmail.com">jeronimo.nascimento.dev@gmail.com</a>
+          </div>
+          <p class="contact-note" data-i18n="contact.note">Typically replies within 2 business days.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="container">
@@ -824,6 +1015,7 @@ footer {
         <li><a href="#features" data-i18n="nav.features">Features</a></li>
         <li><a href="#download" data-i18n="nav.download">Download</a></li>
         <li><a href="#privacy" data-i18n="nav.privacy">Privacy</a></li>
+        <li><a href="#support" data-i18n="nav.support">Support</a></li>
       </ul>
       <p class="footer-copy" data-i18n="footer.copy">&copy; 2026 Stoiquotes. All rights reserved.</p>
     </div>
@@ -836,6 +1028,7 @@ const i18n = {
     "nav.features":        "Features",
     "nav.download":        "Download",
     "nav.privacy":         "Privacy",
+    "nav.support":         "Support",
     "nav.cta":             "App Store",
 
     "hero.eyebrow":        "Stoic philosophy · Daily companion",
@@ -897,12 +1090,32 @@ const i18n = {
     "privacy.s7.title":    "Contact",
     "privacy.s7.p1":       "Questions about this privacy policy? Reach us at",
 
+    "support.label":       "Support",
+    "support.title":       "Frequently asked\nquestions.",
+    "faq.q1.q":            "Is Stoiquotes free?",
+    "faq.q1.a":            "Yes. Stoiquotes is completely free to download and use. There are no ads, no subscriptions, and no in-app purchases.",
+    "faq.q2.q":            "Does the app require an internet connection?",
+    "faq.q2.a":            "No. Stoiquotes works entirely offline. The full quote library is bundled with the app, so you can read anytime, anywhere — even in airplane mode.",
+    "faq.q3.q":            "Which philosophers are included?",
+    "faq.q3.a":            "The library covers the primary Stoic canon: Marcus Aurelius, Seneca, Epictetus, Zeno of Citium, Chrysippus, Musonius Rufus, Cleanthes, and Cato the Younger, among others.",
+    "faq.q4.q":            "How do I save a favorite quote?",
+    "faq.q4.a":            "Tap the bookmark icon on any quote card to add it to your favorites. Your saved quotes are stored locally on your device and are always available offline.",
+    "faq.q5.q":            "Can I share quotes with friends?",
+    "faq.q5.a":            "Yes. Every quote can be shared as a beautifully formatted image or plain text via the share button. The image uses the Stoiquotes visual identity and is designed to look great on any social platform.",
+    "faq.q6.q":            "Is my data private?",
+    "faq.q6.a":            "Absolutely. We do not collect any personal data. Your reading history, favorites, and notes never leave your device. See our Privacy Policy for full details.",
+    "contact.label":       "Still have questions?",
+    "contact.title":       "We're here\nto help.",
+    "contact.body":        "Didn't find what you were looking for? Send us an email and we'll get back to you as soon as possible.",
+    "contact.note":        "Typically replies within 2 business days.",
+
     "footer.copy":         "© 2026 Stoiquotes. All rights reserved.",
   },
   pt: {
     "nav.features":        "Funcionalidades",
     "nav.download":        "Download",
     "nav.privacy":         "Privacidade",
+    "nav.support":         "Suporte",
     "nav.cta":             "App Store",
 
     "hero.eyebrow":        "Filosofia estoica · Companheiro diário",
@@ -963,6 +1176,25 @@ const i18n = {
     "privacy.s6.p1":       "Podemos atualizar esta política de privacidade periodicamente. Quaisquer alterações serão refletidas nesta página com uma data atualizada. O uso continuado do app após as alterações constitui aceitação da política atualizada.",
     "privacy.s7.title":    "Contato",
     "privacy.s7.p1":       "Dúvidas sobre esta política de privacidade? Entre em contato:",
+
+    "support.label":       "Suporte",
+    "support.title":       "Perguntas\nfrequentes.",
+    "faq.q1.q":            "O Stoiquotes é gratuito?",
+    "faq.q1.a":            "Sim. O Stoiquotes é completamente gratuito para baixar e usar. Sem anúncios, sem assinaturas e sem compras dentro do app.",
+    "faq.q2.q":            "O app precisa de conexão com a internet?",
+    "faq.q2.a":            "Não. O Stoiquotes funciona completamente offline. A biblioteca completa de citações vem instalada com o app, então você pode ler a qualquer hora, em qualquer lugar — mesmo no modo avião.",
+    "faq.q3.q":            "Quais filósofos estão incluídos?",
+    "faq.q3.a":            "A biblioteca cobre o cânon estoico principal: Marco Aurélio, Sêneca, Epicteto, Zenão de Cítio, Crisipo, Musônio Rufo, Cleantes e Catão, o Jovem, entre outros.",
+    "faq.q4.q":            "Como faço para salvar uma citação favorita?",
+    "faq.q4.a":            "Toque no ícone de marcador em qualquer card de citação para adicioná-la aos seus favoritos. Suas citações salvas ficam armazenadas localmente no seu dispositivo e sempre disponíveis offline.",
+    "faq.q5.q":            "Posso compartilhar citações com amigos?",
+    "faq.q5.a":            "Sim. Qualquer citação pode ser compartilhada como uma imagem com formatação elegante ou como texto simples pelo botão de compartilhamento. A imagem usa a identidade visual do Stoiquotes e é projetada para ficar ótima em qualquer plataforma.",
+    "faq.q6.q":            "Meus dados são privados?",
+    "faq.q6.a":            "Com certeza. Não coletamos nenhum dado pessoal. Seu histórico de leitura, favoritos e notas nunca saem do seu dispositivo. Consulte nossa Política de Privacidade para mais detalhes.",
+    "contact.label":       "Ainda tem dúvidas?",
+    "contact.title":       "Estamos aqui\npara ajudar.",
+    "contact.body":        "Não encontrou o que procurava? Envie um e-mail e responderemos o mais breve possível.",
+    "contact.note":        "Geralmente respondemos em até 2 dias úteis.",
 
     "footer.copy":         "© 2026 Stoiquotes. Todos os direitos reservados.",
   }
